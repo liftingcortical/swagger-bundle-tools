@@ -2,7 +2,6 @@
 [![Build Status](https://travis-ci.org/kleijnweb/swagger-bundle-tools.svg?branch=master)](https://travis-ci.org/kleijnweb/swagger-bundle-tools)
 [![Coverage Status](https://coveralls.io/repos/github/kleijnweb/swagger-bundle-tools/badge.svg?branch=master)](https://coveralls.io/github/kleijnweb/swagger-bundle-tools?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/kleijnweb/swagger-bundle-tools/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kleijnweb/swagger-bundle-tools/?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/kleijnweb/swagger-bundle-tools/v/stable)](https://packagist.org/packages/kleijnweb/swagger-bundle-tools)
 
 Development tools for [kleijnweb/swagger-bundle](https://github.com/kleijnweb/swagger-bundle)
 
@@ -12,7 +11,7 @@ You can use the bundle in your SwaggerBundle project by adding it to your AppKer
 
 Install using composer:
 
-`composer global require kleijnweb/swagger-bundle-tools`. 
+`composer global require kleijnweb/swagger-bundle-tools=dev-master`. 
 
 Change into the root directory of the desired SwaggerBundle project and invoke the `swagger-bundle-tools` script.
 
