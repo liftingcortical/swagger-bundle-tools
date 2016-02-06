@@ -12,7 +12,7 @@ You can use the bundle in your SwaggerBundle project by adding it to your AppKer
 
 Install using composer:
 
-`composer global require kleijnweb/swagger-bundle-tools`). 
+`composer global require kleijnweb/swagger-bundle-tools`. 
 
 Change into the root directory of the desired SwaggerBundle project and invoke the `swagger-bundle-tools` script.
 
