@@ -1,0 +1,42 @@
+{
+  "name": "kleijnweb/swagger-bundle-tools",
+  "type": "project",
+  "authors": [
+    {
+      "name": "John Kleijn",
+      "email": "john@kleijnweb.nl",
+      "homepage": "http://www.kleijnweb.nl"
+    }
+  ],
+  "license": "LGPL-3.0",
+  "description": "Utils for KleijnWeb\\SwaggerBundle",
+  "autoload": {
+    "psr-4": {
+      "KleijnWeb\\SwaggerBundleTools\\": "src"
+    }
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "psr/log": "1.0",
+    "kleijnweb/swagger-bundle": "dev-master",
+    "symfony/framework-bundle": ">=2.6.0",
+    "symfony/console": ">=2.6.0",
+    "symfony/form": ">=2.6.0",
+    "symfony/serializer": ">=2.6.0",
+    "symfony/monolog-bundle": ">=2.6.0",
+    "sensio/generator-bundle": "~2.3",
+    "zendframework/zend-stdlib": ">=2.4.0",
+    "symfony/browser-kit": ">=2.6.0",
+    "twig/twig": "^1.21",
+    "jms/serializer": "1.0",
+    "phpoption/phpoption": ">=1.1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=4.1.0",
+    "mikey179/vfsStream": "^1.5",
+    "satooshi/php-coveralls": "<1.0"
+  },
+  "config": {
+    "bin-dir": "vendor/bin"
+  }
+}

@@ -1,0 +1,5 @@
+vendor
+src/Tests/Functional/PetStore/app/logs
+src/Tests/Functional/PetStore/app/cache
+composer.lock
+phpunit.xml

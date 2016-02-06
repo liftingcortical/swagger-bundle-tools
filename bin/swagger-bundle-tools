@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+/*
+ * This file is part of the KleijnWeb\SwaggerBundleTools package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Symfony\Component\Console\Input\ArgvInput;
+use KleijnWeb\SwaggerBundleTools\Console\Application;
+use Symfony\Component\Debug\Debug;
+
+set_time_limit(0);
+
+$cwd = getcwd();
+$includes = ['vendor/autoload.php', 'app/AppKernel.php'];
+foreach ($includes as $path) {
+    if (!file_exists("$cwd/$path")) {
+        die("File '$path' not found in current project");
+    }
+    require_once $path;
+}
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    $loader = require __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../../../autoload.php')) {
+    require __DIR__ . '/../../../autoload.php';
+} else {
+    die("Composer dependencies not installed into swagger-bundle-tools");
+}
+
+AnnotationRegistry::registerLoader([$loader, 'loadClass']);
+
+$input = new ArgvInput();
+
+if (false === $umask = $input->getParameterOption(['--umask', '-u'], false)) {
+    umask($umask);
+}
+$env = $input->getParameterOption(['--env', '-e'], getenv('SYMFONY_ENV') ?: 'dev');
+$debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']) && $env !== 'prod';
+if ($debug) {
+    Debug::enable();
+}
+
+if (file_exists($cwd . '/.env')) {
+    (new \Dotenv\Dotenv($cwd))->load();
+}
+
+class ToolsKernel extends \AppKernel
+{
+    public function __construct($rootDir, $environment, $debug)
+    {
+        parent::__construct($environment, $debug);
+        $this->rootDir = $rootDir;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerBundles()
+    {
+        $bundles = parent::registerBundles();
+        $bundles[] = new \KleijnWeb\SwaggerBundleTools\KleijnWebSwaggerBundleToolsBundle();
+
+        return $bundles;
+    }
+}
+
+$application = new Application($cwd, $env, $debug);
+$application->run($input);

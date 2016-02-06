@@ -1,0 +1,59 @@
+swagger: '2.0'
+info:
+  description: 'Data api'
+  version: 1.0.0
+basePath: /data/v1
+paths:
+  '/entity/{type}':
+    post:
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+      responses:
+        '200':
+          description: "The created resource"
+          schema:
+            type: object
+
+  '/entity/{type}/{id}':
+    put:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: object
+      responses:
+        '200':
+          description: "The modified resource"
+          schema:
+            type: object
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '204':
+          description: "Empty response"
+          schema:
+            type: null
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: "The requested resource"
+          schema:
+            type: object
