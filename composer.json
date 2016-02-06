@@ -18,7 +18,7 @@
   "require": {
     "php": ">=5.4.0",
     "psr/log": "1.0",
-    "kleijnweb/swagger-bundle": "dev-master",
+    "kleijnweb/swagger-bundle": "^3.0.0@dev",
     "symfony/framework-bundle": ">=2.6.0",
     "symfony/console": ">=2.6.0",
     "symfony/form": ">=2.6.0",

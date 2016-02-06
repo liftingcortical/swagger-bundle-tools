@@ -16,6 +16,8 @@ Install using composer:
 
 Change into the root directory of the desired SwaggerBundle project and invoke the `swagger-bundle-tools` script.
 
+*The utilities require SwaggerBundle 3.0+*
+
 # Tools
 
 ## Amending Your Swagger Document
