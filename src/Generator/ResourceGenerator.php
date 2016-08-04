@@ -32,7 +32,9 @@ class ResourceGenerator extends Generator
             'resource_namespace' => $relativeNamespace
         ];
 
-        foreach ($document->getResourceSchemas() as $typeName => $spec) {
+        $definition = json_decode(json_encode($document->getDefinition()), true);
+
+        foreach ($definition['definitions'] as $typeName => $spec) {
             $resourceFile = "$dir/" . str_replace('\\', '/', $relativeNamespace) . "/$typeName.php";
             $this->renderFile(
                 'resource.php.twig',
