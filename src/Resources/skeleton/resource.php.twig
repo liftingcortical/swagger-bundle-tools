@@ -17,7 +17,7 @@ class {{ resource_class }}
 {%- block class_body -%}
     {%- for name, property in properties -%}
     {% if property.type == 'object' %}
-    {% set typeName = property.id|split('/')|last %}
+    {% set typeName = property['x-ref-id']|split('/')|last %}
     {% set fqTypeName = namespace ~ (resource_namespace ? '\\' ~ resource_namespace : '') ~ '\\' ~ typeName %}
 
     /**
@@ -66,7 +66,7 @@ class {{ resource_class }}
     {% endfor %}
     {% for name, property in properties %}
     {%- if property.type == 'object' %}
-    {%- set typeName = property.id|split('/')|last %}
+    {%- set typeName = property['x-ref-id']|split('/')|last %}
 
     /**
      * @param {{ typeName }}
@@ -112,7 +112,7 @@ class {{ resource_class }}
     {% endfor %}
     {% for name, property in properties %}
     {% if property.type == 'object' %}
-    {%- set typeName = property.id|split('/')|last -%}
+    {%- set typeName = property['x-ref-id']|split('/')|last -%}
 
     /**
      * @return {{ typeName }}
