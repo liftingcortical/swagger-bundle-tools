@@ -9,6 +9,7 @@
 namespace KleijnWeb\SwaggerBundleTools\Generator;
 
 use KleijnWeb\SwaggerBundle\Document\SwaggerDocument;
+use KleijnWeb\SwaggerBundleTools\Twig\InflectorExtension;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -27,20 +28,33 @@ class ResourceGenerator extends Generator
         $dir = $bundle->getPath();
 
         $parameters = [
-            'namespace'          => $bundle->getNamespace(),
-            'bundle'             => $bundle->getName(),
-            'resource_namespace' => $relativeNamespace
+            'namespace' => $bundle->getNamespace(),
+            'bundle' => $bundle->getName(),
+            'resource_namespace' => $relativeNamespace,
         ];
 
         $definition = json_decode(json_encode($document->getDefinition()), true);
 
         foreach ($definition['definitions'] as $typeName => $spec) {
-            $resourceFile = "$dir/" . str_replace('\\', '/', $relativeNamespace) . "/$typeName.php";
+            $resourceFile = "$dir/".str_replace('\\', '/', $relativeNamespace)."/$typeName.php";
             $this->renderFile(
                 'resource.php.twig',
                 $resourceFile,
                 array_merge($parameters, $spec, ['resource' => $typeName, 'resource_class' => $typeName])
             );
         }
+    }
+
+    /**
+     * Add InflectorExtension to Twig Environment
+     *
+     * @return \Twig_Environment
+     */
+    protected function getTwigEnvironment()
+    {
+        $twigEnvironment = parent::getTwigEnvironment();
+        $twigEnvironment->addExtension(new InflectorExtension());
+
+        return $twigEnvironment;
     }
 }
