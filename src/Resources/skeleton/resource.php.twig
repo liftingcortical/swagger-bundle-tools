@@ -143,6 +143,18 @@ class {{ resource_class }}
     {
         return $this->{{ name }};
     }{{- "\n" -}}
+
+    {% if property.type == 'array' and property.items is defined and property.items.type == 'object' %}
+    {% set typeName = property.items['x-ref-id']|split('/')|last %}
+
+    /**
+    * @param {{ typeName }} ${{ typeName }}
+    */
+    public function add{{ typeName }}({{ typeName }} ${{ typeName }})
+    {
+        $this->{{ name }}[] = ${{ typeName }};
+    }{{- "\n" -}}
+    {% endif %}
     {%- endfor -%}
 {%- endblock class_body -%}{{- '}' -}}
 {{- "\n" -}}
