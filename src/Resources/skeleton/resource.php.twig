@@ -47,7 +47,7 @@ class {{ resource_class }}
      */
     private ${{ name }};
     {% elseif property.type == 'array' and property.items is defined and property.items.type == 'object' %}
-    {% set typeName = property.items.id|split('/')|last %}
+    {% set typeName = property.items['x-ref-id']|split('/')|last %}
     {% set fqTypeName = namespace ~ (resource_namespace ? '\\' ~ resource_namespace : '') ~ '\\' ~ typeName %}
 
     /**
