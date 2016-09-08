@@ -40,8 +40,8 @@ class SwaggerBundleResponseFixer extends Fixer
         if (!isset($definition->definitions)) {
             $definition->definitions = [];
         }
-        if (!isset($definition->definitions['VndError'])) {
-            $definition->definitions['VndError'] = [
+        if (!isset($definition->definitions->VndError)) {
+            $definition->definitions->VndError = [
                 'type'       => 'object',
                 'required'   => ['message', 'logref'],
                 'properties' => [
@@ -52,14 +52,14 @@ class SwaggerBundleResponseFixer extends Fixer
         }
         foreach ($definition->paths as &$operations) {
             foreach ($operations as &$operation) {
-                if (!isset($operation['responses']['500'])) {
-                    $operation['responses']['500'] = [
+                if (!isset($operation->responses['500'])) {
+                    $operation->responses['500'] = [
                         'description' => 'Generic server error',
                         'schema'      => ['$ref' => '#/responses/ServerError']
                     ];
                 }
-                if (!isset($operation['responses']['400'])) {
-                    $operation['responses']['400'] = [
+                if (!isset($operation->responses['400'])) {
+                    $operation->responses['400'] = [
                         'description' => 'Client input error',
                         'schema'      => ['$ref' => '#/responses/InputError']
                     ];

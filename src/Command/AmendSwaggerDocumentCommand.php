@@ -72,6 +72,6 @@ class AmendSwaggerDocumentCommand extends Command
     {
         $document = $this->documentRepository->get($input->getArgument('file'));
         $this->fixer->fix($document);
-        $document->write($input->getOption('out'));
+        //$output->write($input->getOption('out'));
     }
 }
