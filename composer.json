@@ -31,7 +31,6 @@
     "phpunit/phpunit": "^4",
     "mikey179/vfsStream": "^1.5",
     "satooshi/php-coveralls": "<1.0"
-
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

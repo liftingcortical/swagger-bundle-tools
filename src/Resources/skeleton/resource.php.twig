@@ -2,7 +2,7 @@
 namespace {{ namespace }}{{ resource_namespace ? '\\' ~ resource_namespace : '' }};
 
 {% block use_statements %}
-use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation;
 {% endblock use_statements %}
 
 /**
@@ -17,56 +17,56 @@ class {{ resource_class }}
 {%- block class_body -%}
     {%- for name, property in properties -%}
     {% if property.type == 'object' %}
-    {% set typeName = property.id|split('/')|last %}
+    {% set typeName = property['x-ref-id']|split('/')|last %}
     {% set fqTypeName = namespace ~ (resource_namespace ? '\\' ~ resource_namespace : '') ~ '\\' ~ typeName %}
 
     /**
      * @var {{ typeName }}
-     * @Type("{{ fqTypeName }}")
+     * @Annotation\Type("{{ fqTypeName }}")
      */
-    private ${{ name }};
+    private ${{ name|klcamelize }};
     {% elseif property.type == 'string' and property.format is defined and property.format == 'date' %}
 
     /**
      * @var \DateTime
-     * @Type("DateTime<'Y-m-d'>")
+     * @Annotation\Type("DateTime<'Y-m-d'>")
      */
-    private ${{ name }};
+    private ${{ name|klcamelize }};
     {% elseif property.type == 'number' %}
 
     /**
      * @var float
-     * @Type("double")
+     * @Annotation\Type("double")
      */
-    private ${{ name }};
+    private ${{ name|klcamelize }};
     {% elseif property.type == 'string' and property.format is defined and property.format == 'date-time' %}
 
     /**
      * @var \DateTime
-     * @Type("DateTime<'Y-m-d\TH:i:sP'>")
+     * @Annotation\Type("DateTime<'Y-m-d\TH:i:sP'>")
      */
-    private ${{ name }};
+    private ${{ name|klcamelize }};
     {% elseif property.type == 'array' and property.items is defined and property.items.type == 'object' %}
-    {% set typeName = property.items.id|split('/')|last %}
+    {% set typeName = property.items['x-ref-id']|split('/')|last %}
     {% set fqTypeName = namespace ~ (resource_namespace ? '\\' ~ resource_namespace : '') ~ '\\' ~ typeName %}
 
     /**
      * @var {{ typeName }}[]
-     * @Type("array<{{ fqTypeName }}>")
+     * @Annotation\Type("array<{{ fqTypeName }}>")
      */
-    private ${{ name }};
+    private ${{ name|klcamelize }};
     {% else %}
 
     /**
      * @var {{ property.type }}
-     * @Type("{{ property.type }}")
+     * @Annotation\Type("{{ property.type }}")
      */
-    private ${{ name }};
+    private ${{ name|klcamelize }};
     {% endif %}
     {% endfor %}
     {% for name, property in properties %}
     {%- if property.type == 'object' %}
-    {%- set typeName = property.id|split('/')|last %}
+    {%- set typeName = property['x-ref-id']|split('/')|last %}
 
     /**
      * @param {{ typeName }}
@@ -103,46 +103,67 @@ class {{ resource_class }}
      */
     {%- endif %}
 
-    public function set{{ name|capitalize }}(${{ name }})
+    public function set{{ name|klclassify }}(${{ name|klcamelize }})
     {
-        $this->{{ name }} = ${{ name }};
+        $this->{{ name|klcamelize }} = ${{ name|klcamelize }};
 
         return $this;
-    }
+    }{{- "\n" -}}
+    {%- if property.type == 'array' and property.items is defined and property.items.type == 'object' %}
+    {%- set typeName = property.items['x-ref-id']|split('/')|last %}
+
+    /**
+     * @param {{ typeName }} ${{ typeName|klcamelize }}
+     */
+    public function add{{ name|klsingularize|klclassify }}({{ typeName }} ${{ typeName|klcamelize }})
+    {
+        $this->{{ name }}[] = ${{ typeName|klcamelize }};
+    }{{- "\n" -}}
+    {%- endif %}
     {% endfor %}
     {% for name, property in properties %}
-    {% if property.type == 'object' %}
-    {%- set typeName = property.id|split('/')|last -%}
+    {%- if property.type == 'object' %}
+    {%- set typeName = property['x-ref-id']|split('/')|last %}
 
     /**
      * @return {{ typeName }}
      */
-    {% elseif property.type == 'string' and property.format is defined and property.format == 'date' %}
+    {%- elseif property.type == 'string' and property.format is defined and property.format == 'date' %}
 
     /**
      * @return \DateTime
      */
-    {% elseif property.type == 'number' %}
+    {%- elseif property.type == 'number' %}
 
     /**
      * @return float
      */
-    {% elseif property.type == 'string' and property.format is defined and property.format == 'date-time' %}
+    {%- elseif property.type == 'string' and property.format is defined and property.format == 'date-time' %}
 
     /**
      * @return \DateTime
      */
-    {% else %}
+    {%- else %}
 
     /**
      * @return {{ property.type }}
      */
     {%- endif %}
 
-    public function get{{ name|capitalize }}()
+    public function get{{ name|klclassify }}()
+    {
+        return $this->{{ name|klcamelize }};
+    }{{- "\n" -}}
+    {%- if property.type == 'boolean' %}
+
+    /**
+     * @return boolean
+     */
+    public function is{{ name|klclassify }}()
     {
         return $this->{{ name }};
     }{{- "\n" -}}
+    {%- endif %}
     {%- endfor -%}
 {%- endblock class_body -%}{{- '}' -}}
 {{- "\n" -}}

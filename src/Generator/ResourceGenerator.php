@@ -33,9 +33,9 @@ class ResourceGenerator extends Generator
             'resource_namespace' => $relativeNamespace,
         ];
 
-        $definition = $document->getDefinition();
+        $definition = json_decode(json_encode($document->getDefinition()), true);
 
-        foreach ($definition->definitions as $typeName => $spec) {
+        foreach ($definition['definitions'] as $typeName => $spec) {
             $resourceFile = "$dir/".str_replace('\\', '/', $relativeNamespace)."/$typeName.php";
             $this->renderFile(
                 'resource.php.twig',
