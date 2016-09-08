@@ -5,14 +5,14 @@ services:
   swagger.utils.document_fixer.swagger_bundle_response:
     class: KleijnWeb\SwaggerBundleTools\DocumentFixer\Fixers\SwaggerBundleResponseFixer
 
-  swagger.utils.command.amend_swagger:
-    class: KleijnWeb\SwaggerBundleTools\Command\AmendSwaggerDocumentCommand
-    arguments: ['@swagger.document.repository', '@swagger.utils.document_fixer.swagger_bundle_response']
-    tags:
-        -  { name: console.command }
-
+#  swagger.utils.command.amend_swagger:
+#    class: KleijnWeb\SwaggerBundleTools\Command\AmendSwaggerDocumentCommand
+#    arguments: ['@swagger.document.repository', '@swagger.utils.document_fixer.swagger_bundle_response']
+#    tags:
+#        -  { name: console.command }
+#
   swagger.utils.command.generate_resources:
     class: KleijnWeb\SwaggerBundleTools\Command\GenerateResourceClassesCommand
-    arguments: ['@swagger.document.repository', '@swagger.utils.resource_generator']
+    arguments: ['@swagger.description.repository', '@swagger.utils.resource_generator']
     tags:
         -  { name: console.command }

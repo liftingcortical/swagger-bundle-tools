@@ -18,7 +18,7 @@
   "require": {
     "php": "^7",
     "psr/log": "^1.0",
-    "kleijnweb/swagger-bundle": "dev-master",
+    "kleijnweb/php-api-descriptions": "dev-master",
     "symfony/yaml": "^3.1",
     "symfony/console": "^3.1",
     "symfony/serializer": "^3.1",

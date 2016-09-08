@@ -7,14 +7,14 @@
  */
 namespace KleijnWeb\SwaggerBundleTools\Command;
 
+use KleijnWeb\PhpApi\Descriptions\Description\Description;
+use KleijnWeb\PhpApi\Descriptions\Description\Repository;
 use KleijnWeb\SwaggerBundleTools\Generator\ResourceGenerator;
-use KleijnWeb\SwaggerBundle\Document\DocumentRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -30,15 +30,15 @@ class GenerateResourceClassesCommand extends ContainerAwareCommand
     private $generator;
 
     /**
-     * @var DocumentRepository
+     * @var Repository
      */
     private $documentRepository;
 
     /**
-     * @param DocumentRepository $documentRepository
-     * @param ResourceGenerator  $generator
+     * @param Repository        $documentRepository
+     * @param ResourceGenerator $generator
      */
-    public function __construct(DocumentRepository $documentRepository, ResourceGenerator $generator)
+    public function __construct(Repository $documentRepository, ResourceGenerator $generator)
     {
         parent::__construct(self::NAME);
 
@@ -59,7 +59,6 @@ class GenerateResourceClassesCommand extends ContainerAwareCommand
         $this->generator = $generator;
     }
 
-
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
@@ -73,8 +72,11 @@ class GenerateResourceClassesCommand extends ContainerAwareCommand
         /** @var KernelInterface $kernel */
         $kernel = $this->getContainer()->get('kernel');
         $bundle = $kernel->getBundle($input->getArgument('bundle'));
-        $document = $this->documentRepository->get($input->getArgument('file'));
-        $this->generator->setSkeletonDirs(__DIR__ . '/../Resources/skeleton');
-        $this->generator->generate($bundle, $document, $input->getOption('namespace'));
+
+        /** @var Description $description */
+        $description = $this->documentRepository->get($input->getArgument('file'));
+
+        $this->generator->setSkeletonDirs(__DIR__.'/../Resources/skeleton');
+        $this->generator->generate($bundle, $description, $input->getOption('namespace'));
     }
 }

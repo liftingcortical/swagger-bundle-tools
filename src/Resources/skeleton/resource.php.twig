@@ -16,37 +16,37 @@ class {{ resource_class }}
 {
 {%- block class_body -%}
     {%- for name, property in properties -%}
-    {% if property.type == 'object' %}
-    {% set typeName = property['x-ref-id']|split('/')|last %}
-    {% set fqTypeName = namespace ~ (resource_namespace ? '\\' ~ resource_namespace : '') ~ '\\' ~ typeName %}
+    {%- if property.type == 'object' %}
+    {%- set typeName = property['x-ref-id']|split('/')|last -%}
+    {%- set fqTypeName = namespace ~ (resource_namespace ? '\\' ~ resource_namespace : '') ~ '\\' ~ typeName -%}
 
     /**
      * @var {{ typeName }}
      * @Annotation\Type("{{ fqTypeName }}")
      */
     private ${{ name|klcamelize }};
-    {% elseif property.type == 'string' and property.format is defined and property.format == 'date' %}
+    {%- elseif property.type == 'string' and property.format is defined and property.format == 'date' %}
 
     /**
      * @var \DateTime
      * @Annotation\Type("DateTime<'Y-m-d'>")
      */
     private ${{ name|klcamelize }};
-    {% elseif property.type == 'number' %}
+    {%- elseif property.type == 'number' %}
 
     /**
      * @var float
      * @Annotation\Type("double")
      */
     private ${{ name|klcamelize }};
-    {% elseif property.type == 'string' and property.format is defined and property.format == 'date-time' %}
+    {%- elseif property.type == 'string' and property.format is defined and property.format == 'date-time' %}
 
     /**
      * @var \DateTime
      * @Annotation\Type("DateTime<'Y-m-d\TH:i:sP'>")
      */
     private ${{ name|klcamelize }};
-    {% elseif property.type == 'array' and property.items is defined and property.items.type == 'object' %}
+    {%- elseif property.type == 'array' and property.items is defined and property.items.type == 'object' %}
     {% set typeName = property.items['x-ref-id']|split('/')|last %}
     {% set fqTypeName = namespace ~ (resource_namespace ? '\\' ~ resource_namespace : '') ~ '\\' ~ typeName %}
 
@@ -55,14 +55,14 @@ class {{ resource_class }}
      * @Annotation\Type("array<{{ fqTypeName }}>")
      */
     private ${{ name|klcamelize }};
-    {% else %}
+    {%- else %}
 
     /**
      * @var {{ property.type }}
      * @Annotation\Type("{{ property.type }}")
      */
     private ${{ name|klcamelize }};
-    {% endif %}
+    {%- endif %}{{- "\n" -}}
     {% endfor %}
     {% for name, property in properties %}
     {%- if property.type == 'object' %}

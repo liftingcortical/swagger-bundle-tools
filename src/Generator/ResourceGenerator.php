@@ -8,7 +8,7 @@
 
 namespace KleijnWeb\SwaggerBundleTools\Generator;
 
-use KleijnWeb\SwaggerBundle\Document\SwaggerDocument;
+use KleijnWeb\PhpApi\Descriptions\Description\Description;
 use KleijnWeb\SwaggerBundleTools\Twig\InflectorExtension;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -20,10 +20,10 @@ class ResourceGenerator extends Generator
 {
     /**
      * @param BundleInterface $bundle
-     * @param SwaggerDocument $document
+     * @param Description     $description
      * @param string          $relativeNamespace
      */
-    public function generate(BundleInterface $bundle, SwaggerDocument $document, $relativeNamespace = 'Model\Resources')
+    public function generate(BundleInterface $bundle, Description $description, $relativeNamespace = 'Model\Resources')
     {
         $dir = $bundle->getPath();
 
@@ -33,33 +33,35 @@ class ResourceGenerator extends Generator
             'resource_namespace' => $relativeNamespace,
         ];
 
-        $definition = json_decode(json_encode($document->getDefinition()), true);
+        $definition = $this->convertObjectToArray($description->getDocument()->getDefinition());
 
         foreach ($definition['definitions'] as $typeName => $spec) {
             $resourceFile = "$dir/".str_replace('\\', '/', $relativeNamespace)."/$typeName.php";
             $this->renderFile(
                 'resource.php.twig',
                 $resourceFile,
-                array_merge($parameters, $this->castObjectToArray($spec), ['resource' => $typeName, 'resource_class' => $typeName])
+                array_merge(
+                    $parameters,
+                    $spec,
+                    [
+                        'resource' => $typeName,
+                        'resource_class' => $typeName,
+                    ]
+                )
             );
         }
     }
 
-    protected function castObjectToArray($object)
+    /**
+     * The ugly hack of converting object to array
+     *
+     * @param $object
+     *
+     * @return mixed
+     */
+    protected function convertObjectToArray($object)
     {
-        if (is_object($object)) {
-            $object = (array) $object;
-        }
-        if (is_array($object)) {
-            $new = array();
-            foreach ($object as $key => $val) {
-                $new[$key] = $this->castObjectToArray($val);
-            }
-        } else {
-            $new = $object;
-        }
-
-        return $new;
+        return json_decode(json_encode($object), true);
     }
 
     /**
