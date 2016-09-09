@@ -8,7 +8,7 @@
 
 namespace KleijnWeb\SwaggerBundleTools\DocumentFixer;
 
-use KleijnWeb\SwaggerBundle\Document\SwaggerDocument;
+use KleijnWeb\PhpApi\Descriptions\Description\Document\Document;
 
 abstract class Fixer
 {
@@ -18,9 +18,9 @@ abstract class Fixer
     private $next;
 
     /**
-     * @param SwaggerDocument $document
+     * @param Document $document
      */
-    public function fix(SwaggerDocument $document)
+    public function fix(Document $document)
     {
         $this->process($document);
 
@@ -42,9 +42,9 @@ abstract class Fixer
     }
 
     /**
-     * @param SwaggerDocument $document
+     * @param Document $document
      *
      * @return void
      */
-    abstract public function process(SwaggerDocument $document);
+    abstract public function process(Document $document);
 }

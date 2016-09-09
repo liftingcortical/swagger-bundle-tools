@@ -9,7 +9,7 @@
 namespace KleijnWeb\SwaggerBundleTools\Tests\Document;
 
 use KleijnWeb\SwaggerBundleTools\DocumentFixer\Fixers\SwaggerBundleResponseFixer;
-use KleijnWeb\SwaggerBundle\Document\DocumentRepository;
+use KleijnWeb\PhpApi\Descriptions\Description\Repository;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
@@ -34,7 +34,7 @@ class AmendSwaggerDocumentCommandTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $application = new Application();
-        $application->add(new AmendSwaggerDocumentCommand(new DocumentRepository(), new SwaggerBundleResponseFixer()));
+        $application->add(new AmendSwaggerDocumentCommand(new Repository(), new SwaggerBundleResponseFixer()));
 
         $command = $application->find(AmendSwaggerDocumentCommand::NAME);
         $this->commandTester = new CommandTester($command);

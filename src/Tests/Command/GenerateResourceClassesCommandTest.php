@@ -8,6 +8,7 @@
 
 namespace KleijnWeb\SwaggerBundleTools\Tests\Document;
 
+use KleijnWeb\PhpApi\Descriptions\Description\Repository;
 use KleijnWeb\SwaggerBundleTools\Command\GenerateResourceClassesCommand;
 use KleijnWeb\SwaggerBundleTools\Generator\ResourceGenerator;
 use KleijnWeb\SwaggerBundle\Document\DocumentRepository;
@@ -36,7 +37,7 @@ class GenerateResourceClassesCommandTest extends KernelTestCase
         $application = new Application(self::$kernel);
 
         $application->add(
-            new GenerateResourceClassesCommand(new DocumentRepository(), new ResourceGenerator())
+            new GenerateResourceClassesCommand(new Repository(), new ResourceGenerator())
         );
 
         $command = $application->find(GenerateResourceClassesCommand::NAME);

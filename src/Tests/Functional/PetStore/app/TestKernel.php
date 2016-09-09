@@ -12,9 +12,7 @@ class TestKernel extends Kernel
     {
         $bundles = [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle(),
-            new KleijnWeb\SwaggerBundle\KleijnWebSwaggerBundle(),
             new KleijnWeb\SwaggerBundleTools\Tests\Functional\PetStore\PetStoreBundle(),
             new KleijnWeb\SwaggerBundleTools\KleijnWebSwaggerBundleToolsBundle()
         ];
