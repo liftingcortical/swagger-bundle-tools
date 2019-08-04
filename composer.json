@@ -21,7 +21,7 @@
     "kleijnweb/php-api-descriptions": "dev-master",
     "symfony/yaml": "^3.1",
     "symfony/console": "^3.1",
-    "symfony/serializer": "^3.1",
+    "symfony/serializer": "^4.3",
     "sensio/generator-bundle": "^3.0",
     "doctrine/common": "^2.6",
     "twig/twig": "^1.24",
